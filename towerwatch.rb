@@ -14,18 +14,20 @@ before do
 end
 
 get '/?' do
-  if params[:q]
-    @tickets = @project.tickets(:q => params[:q])
-    unless params[:page]
-      params[:page] = 2
-    else
-      params[:page] = params[:page] + 1
-    end
-    @page_link = "/?q=#{params[:q]}?page=#{params[:page]}"
-    haml :tickets
-  else
-    haml :search
-  end
+  puts ENV['LIGHTHOUSE_USERNAME']
+  puts ENV['LIGHTHOUSE_PASSWORD']
+  # if params[:q]
+  #   @tickets = @project.tickets(:q => params[:q])
+  #   unless params[:page]
+  #     params[:page] = 2
+  #   else
+  #     params[:page] = params[:page] + 1
+  #   end
+  #   @page_link = "/?q=#{params[:q]}?page=#{params[:page]}"
+  #   haml :tickets
+  # else
+  #   haml :search
+  # end
 end
 
 post '/prioritize' do
