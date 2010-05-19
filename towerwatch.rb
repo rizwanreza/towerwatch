@@ -14,7 +14,7 @@ before do
 end
 
 get '/?' do
-  
+  "#{settings.username}"
   
   # if params[:q]
   #   @tickets = @project.tickets(:q => params[:q])
