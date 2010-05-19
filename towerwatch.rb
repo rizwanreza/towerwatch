@@ -14,25 +14,23 @@ before do
 end
 
 get '/?' do
-  "#{settings.username}"
-  
-  # if params[:q]
-  #   @tickets = @project.tickets(:q => params[:q])
-  #   unless params[:page]
-  #     params[:page] = 2
-  #   else
-  #     params[:page] = params[:page] + 1
-  #   end
-  #   @page_link = "/?q=#{params[:q]}?page=#{params[:page]}"
-  #   haml :tickets
-  # else
-  #   haml :search
-  # end
+  if params[:q]
+    @tickets = @project.tickets(:q => params[:q])
+    unless params[:page]
+      params[:page] = 2
+    else
+      params[:page] = params[:page] + 1
+    end
+    @page_link = "/?q=#{params[:q]}?page=#{params[:page]}"
+    haml :tickets
+  else
+    haml :search
+  end
 end
 
 post '/prioritize' do
   if params[:priority] != ''
-    Lighthouse.authenticate(settings.username, settings.password)
+    Lighthouse.authenticate(ENV['LIGHTHOUSE_USERNAME'], ENV['LIGHTHOUSE_PASSWORD'])
     ticket = Lighthouse::Ticket.find(params[:ticket_id], :params => { :project_id => 8994 })
     ticket.priority = params[:priority].to_i
     if ticket.save
