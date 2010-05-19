@@ -14,8 +14,8 @@ before do
 end
 
 get '/?' do
-  puts ENV['LIGHTHOUSE_USERNAME']
-  puts ENV['LIGHTHOUSE_PASSWORD']
+  "Environment variables: #{ENV['LIGHTHOUSE_USERNAME']} #{ENV['LIGHTHOUSE_PASSWORD']} #{ENV['RACK_ENV']}"
+  
   # if params[:q]
   #   @tickets = @project.tickets(:q => params[:q])
   #   unless params[:page]
