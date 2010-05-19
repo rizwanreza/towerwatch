@@ -4,10 +4,14 @@ require "haml"
 require "lighthouse-api"
 require "yaml"
 
-config =  YAML::load( File.read(File.expand_path( '../config/credentials.yml', __FILE__ )) )
-
-set :username, config['username']
-set :password, config['password']
+unless ENV['LIGHTHOUSE_USERNAME'] && ENV['LIGHTHOUSE_PASSWORD']
+  config =  YAML::load( File.read(File.expand_path( '../config/credentials.yml', __FILE__ )) )
+  set :username, config['username']
+  set :password, config['password']
+else
+  set :username, ENV['LIGHTHOUSE_USERNAME']
+  set :password, ENV['LIGHTHOUSE_PASSWORD']
+end
 
 before do
   headers "Content-Type" => "text/html; charset=utf-8"
