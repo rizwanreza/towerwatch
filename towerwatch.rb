@@ -18,6 +18,15 @@ configure do
   
   set :haml, { :format => :html5 }
   set :sass, Compass.sass_engine_options
+
+  not_found do
+    "We're so sorry, but we don't what this is"
+  end
+
+  error do
+    "Something really nasty happened.  We're on it!"
+  end
+
 end
 
 before do
