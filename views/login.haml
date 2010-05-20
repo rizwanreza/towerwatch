@@ -1,0 +1,26 @@
+!!! 5
+%html
+  %head
+    %title Towerwatch
+    %link{:href => '/stylesheets/screen.css', :media => 'screen', :rel => 'stylesheet', :type => 'text/css'}
+  %body
+    #login-wrapper
+      %h2
+        Lighthouse Login
+      %p
+        Enter your login credentials. Towerwatch saves these in a cookie.
+
+      #login
+        %form{:action => "/lighthouse", :method => "post"}
+          %p
+            %label{:for => "username"}
+              Username
+            %br
+            %input{:type => "text", :id => "username", :name => "lighthouse_user"}
+          %p
+            %label{:for => "password"}
+              Password
+            %br
+            %input{:type => "password", :id => "password", :name => "lighthouse_password"}
+          %p
+            %input{:type => "submit"}

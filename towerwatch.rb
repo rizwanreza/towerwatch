@@ -5,6 +5,8 @@ require "compass"
 require "lighthouse-api"
 require "yaml"
 
+enable :sessions
+
 set :username, ENV['LIGHTHOUSE_USERNAME']
 set :password, ENV['LIGHTHOUSE_PASSWORD']
 
@@ -20,41 +22,62 @@ end
 
 before do
   headers "Content-Type" => "text/html; charset=utf-8"
-  Lighthouse.account = "rails"
-  @project = Lighthouse::Project.find(8994)
 end
 
 get '/?' do
-  if params[:q]
-    @tickets = @project.tickets(:q => params[:q])
+  if session[:lighthouse_user] && session[:lighthouse_password]
+    Lighthouse.account = "rails"
+    @project = Lighthouse::Project.find(8994)
+    
     unless params[:page]
       params[:page] = 2
     else
       params[:page] = params[:page] + 1
     end
-    @page_link = "/?q=#{params[:q]}?page=#{params[:page]}"
-    haml :tickets
+    
+    if params[:q]
+      @tickets = @project.tickets(:q => params[:q])
+      @page_link = "/?q=#{params[:q]}?page=#{params[:page]}"
+      haml :tickets
+    else
+      @tickets = @project.tickets(:q => 'state:open updated:"since 7 days ago"')
+      @page_link = "/?q=state:open updated:'since 7 days ago'?page=#{params[:page]}"
+      haml :tickets    
+    end
   else
-    @tickets = @project.tickets(:q => 'state:open updated:"since 7 days ago"')
-    @page_link = "/?q=state:open updated:'since 7 days ago'?page=#{params[:page]}"
-    haml :tickets    
+    redirect '/lighthouse'
   end
 end
 
 post '/prioritize' do
   if params[:priority] != ''
+    Lighthouse.account = "rails"
+    @project = Lighthouse::Project.find(8994)
     Lighthouse.authenticate(ENV['LIGHTHOUSE_USERNAME'], ENV['LIGHTHOUSE_PASSWORD'])
     ticket = Lighthouse::Ticket.find(params[:ticket_id], :params => { :project_id => 8994 })
     ticket.priority = params[:priority].to_i
-    if ticket.save
-      "Submitted #{params[:priority]} priority for ticket ID: #{params[:ticket_id]}"
-    end
+    ticket.save
   else
     "No priority chosen"
   end
 end
 
-# Sass stylesheet
+get '/lighthouse' do
+  haml :login, :layout => false
+end
+
+post '/lighthouse' do
+  session[:lighthouse_user] = params[:lighthouse_user]
+  session[:lighthouse_password] = params[:lighthouse_password]
+  redirect '/'
+end
+
+get '/logout' do
+  session[:lighthouse_user] = nil
+  session[:lighthouse_password] = nil
+  redirect '/'
+end
+
 get '/stylesheets/screen.css' do
   headers 'Content-Type' => 'text/css; charset=utf-8'
   sass :style
