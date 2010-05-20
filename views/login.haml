@@ -6,21 +6,17 @@
   %body
     #login-wrapper
       %h2
-        Lighthouse Login
+        Lighthouse API Token
       %p
-        Enter your login credentials. Towerwatch saves these in a cookie.
-
+        Enter your API token here. Towerwatch saves these in a cookie and requires it so you can prioritize tickets. You will need to have write access to Rails project in Lighthouse.
+      %p
+        You can define a new read &amp; write API token in your profile page. 
       #login
         %form{:action => "/lighthouse", :method => "post"}
           %p
-            %label{:for => "username"}
-              Username
+            %label{:for => "token"}
+              API Token
             %br
-            %input{:type => "text", :id => "username", :name => "lighthouse_user"}
-          %p
-            %label{:for => "password"}
-              Password
-            %br
-            %input{:type => "password", :id => "password", :name => "lighthouse_password"}
+            %input{:type => "text", :id => "token", :name => "token"}
           %p
             %input{:type => "submit"}

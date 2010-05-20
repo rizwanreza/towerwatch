@@ -7,9 +7,6 @@ require "yaml"
 
 enable :sessions
 
-set :username, ENV['LIGHTHOUSE_USERNAME']
-set :password, ENV['LIGHTHOUSE_PASSWORD']
-
 configure do
   Compass.configuration do |config|
     config.project_path = File.dirname(__FILE__)
@@ -34,7 +31,7 @@ before do
 end
 
 get '/?' do
-  if session[:lighthouse_user] && session[:lighthouse_password]
+  if session[:token]
     Lighthouse.account = "rails"
     @project = Lighthouse::Project.find(8994)
     
@@ -62,7 +59,7 @@ post '/prioritize' do
   if params[:priority] != ''
     Lighthouse.account = "rails"
     @project = Lighthouse::Project.find(8994)
-    Lighthouse.authenticate(session[:lighthouse_user], session[:lighthouse_password])
+    Lighthouse.token = session[:token]
     ticket = Lighthouse::Ticket.find(params[:ticket_id], :params => { :project_id => 8994 })
     ticket.priority = params[:priority].to_i
     ticket.save
@@ -76,15 +73,17 @@ get '/lighthouse' do
 end
 
 post '/lighthouse' do
-  session[:lighthouse_user] = params[:lighthouse_user]
-  session[:lighthouse_password] = params[:lighthouse_password]
+  session[:token] = params[:token]
   redirect '/'
 end
 
 get '/logout' do
-  session[:lighthouse_user] = nil
-  session[:lighthouse_password] = nil
+  session[:token] = nil
   redirect '/'
+end
+
+get '/test' do
+  "#{session[:lighthouse_user]} #{session[:lighthouse_password]}"
 end
 
 get '/stylesheets/screen.css' do
