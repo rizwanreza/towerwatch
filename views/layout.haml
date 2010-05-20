@@ -3,19 +3,9 @@
   %head
     %title Towerwatch
     %link{:href => '/stylesheets/screen.css', :media => 'screen', :rel => 'stylesheet', :type => 'text/css'}
-    %link{:href => '/stylesheets/print.css', :media => 'print', :rel => 'stylesheet', :type => 'text/css'}
     %script{:type => "text/javascript", :src => "/javascripts/jquery-1.4.2.min.js"}
-    %script{:type => "text/javascript", :src => "/javascripts/jquery.scrollable.min.js"}
     :javascript
       $(function() {
-        $(".scrollable").scrollable({ 
-          // basic settings
-        	vertical: true,
-
-        	// up/down keys will always control this scrollable
-        	keyboard: 'static',
-        });
-
         $('.prioritize-form').submit(function() {
           $.post($(this).attr('action'), $(this).serialize(), function(data){
             $('#something').toggle();
@@ -37,4 +27,16 @@
       });
       
   %body
-    = yield
+    #wrapper
+      #header
+        %h1
+          Towerwatch
+        
+        #description
+          A focused mini web application to prioritize Lighthouse tickets rapidly.
+      = yield
+    
+      #footer
+        Made by 
+        %a{:href => "http://rizwanreza.com/"}
+          Rizwan Reza

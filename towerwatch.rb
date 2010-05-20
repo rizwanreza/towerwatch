@@ -1,11 +1,22 @@
 require "rubygems"
 require "sinatra"
 require "haml"
+require "compass"
 require "lighthouse-api"
 require "yaml"
 
 set :username, ENV['LIGHTHOUSE_USERNAME']
 set :password, ENV['LIGHTHOUSE_PASSWORD']
+
+configure do
+  Compass.configuration do |config|
+    config.project_path = File.dirname(__FILE__)
+    config.sass_dir = 'views'
+  end
+  
+  set :haml, { :format => :html5 }
+  set :sass, Compass.sass_engine_options
+end
 
 before do
   headers "Content-Type" => "text/html; charset=utf-8"
@@ -24,7 +35,9 @@ get '/?' do
     @page_link = "/?q=#{params[:q]}?page=#{params[:page]}"
     haml :tickets
   else
-    haml :search
+    @tickets = @project.tickets(:q => 'state:open updated:"since 7 days ago"')
+    @page_link = "/?q=state:open updated:'since 7 days ago'?page=#{params[:page]}"
+    haml :tickets    
   end
 end
 
@@ -39,4 +52,10 @@ post '/prioritize' do
   else
     "No priority chosen"
   end
+end
+
+# Sass stylesheet
+get '/stylesheets/screen.css' do
+  headers 'Content-Type' => 'text/css; charset=utf-8'
+  sass :style
 end

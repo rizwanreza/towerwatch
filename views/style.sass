@@ -1,0 +1,107 @@
+@import "blueprint"
+
+h1, h2, h3, h4, h5, h6, a
+  :color #d04e2e
+
+a
+  :text-decoration none
+  &:hover
+    :text-decoration underline
+
+div.hr
+  :border-top 1px solid #D8D8D8
+  hr
+    :border none
+
+code, pre
+  :font-family "Monaco", "Menlo", 'andale mono', 'lucida console', "monospace"
+  :color #595160
+
+pre
+  :padding 5px 10px 5px 10px
+  :font-size 70%
+  :line-height 1.7em
+  :white-space pre-wrap
+  :white-space -moz-pre-wrap
+  :white-space -pre-wrap
+  :white-space -o-pre-wrap
+  :word-wrap break-word
+  :background #efefef
+
+body
+  :font-family "Helvetica Neue", "Helvetica", "Arial", "sans-serif"
+  :color #595160
+  :background #bababa
+  #wrapper
+    +container
+    :background #eaeaea
+    :-webkit-box-shadow 2px 2px 10px #666
+    :-moz-box-shadow 2px 2px 10px #666
+    :padding 0 12px
+    :margin-bottom 20px
+    #header
+      :height 3em
+      #description
+        +column(11)
+        :float right
+        :text-align right
+        :margin-top 26px
+        :font-size 0.8em
+      
+      h1
+        +column(4)
+        :float left
+        :width 187px
+        :margin-top 6px
+  
+    #search
+      :margin-top 32px
+      :height 30px
+      form
+        :background #d04e2e
+        -webkit-border-radius: 40px
+        -moz-border-radius: 40px
+        border-radius: 40px
+        :width 400px
+        :padding-left 12px
+
+        label
+          :font-size 0.8em
+          :font-weight bold
+          :color #fff
+          :padding-right 5px
+        input
+          :width 304px
+          :height 18px
+          :border 1px solid #d04e2e
+          -webkit-border-top-right-radius: 40px
+          -webkit-border-bottom-right-radius: 40px
+          -moz-border-radius-topright: 40px
+          -moz-border-radius-bottomright: 40px
+          border-top-right-radius: 40px
+          border-bottom-right-radius: 40px
+        
+    #tickets
+      .ticket
+        :margin 32px 0
+        h1, h2, h3, h4, h5, h6
+          :font-size 120%
+        p
+          :font-size 80%
+          :line-height 1.8em
+        form
+          :padding-left 10px
+          :width 190px
+          :float right
+          :background #595160
+          -webkit-border-radius: 40px
+          -moz-border-radius: 40px
+          border-radius: 40px
+          label
+            :font-size 0.8em
+            :color white
+            :font-weight bold
+    #footer
+      :margin 32px 0 12px
+      +column(24, "last")
+      :font-size 0.8em
