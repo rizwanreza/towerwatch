@@ -5,27 +5,36 @@
     %link{:href => '/stylesheets/screen.css', :media => 'screen', :rel => 'stylesheet', :type => 'text/css'}
     %link{:href => '/stylesheets/print.css', :media => 'print', :rel => 'stylesheet', :type => 'text/css'}
     %script{:type => "text/javascript", :src => "/javascripts/jquery-1.4.2.min.js"}
+    %script{:type => "text/javascript", :src => "/javascripts/jquery.scrollable.min.js"}
     :javascript
-      $(document).ready(function() {
+      $(function() {
+        $(".scrollable").scrollable({ 
+          // basic settings
+        	vertical: true,
+
+        	// up/down keys will always control this scrollable
+        	keyboard: 'static',
+        });
+
         $('.prioritize-form').submit(function() {
           $.post($(this).attr('action'), $(this).serialize(), function(data){
             $('#something').toggle();
           }, "text");
           return false;
         });
-        
+
         $('.priority-dropdown').change(function() {
           $(this).parent('.prioritize-form').submit();
         });
-        
+
         $('body').ajaxStart(function() {
           $('#loading').show();
         });
-        
+
         $('body').ajaxStop(function() {
           $('#loading').hide();
         });
-        
       });
+      
   %body
     = yield

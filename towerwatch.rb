@@ -40,4 +40,3 @@ post '/prioritize' do
     "No priority chosen"
   end
 end
-
