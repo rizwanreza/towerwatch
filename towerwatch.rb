@@ -62,7 +62,7 @@ post '/prioritize' do
   if params[:priority] != ''
     Lighthouse.account = "rails"
     @project = Lighthouse::Project.find(8994)
-    Lighthouse.authenticate(ENV['LIGHTHOUSE_USERNAME'], ENV['LIGHTHOUSE_PASSWORD'])
+    Lighthouse.authenticate(session[:lighthouse_user], session[:lighthouse_password])
     ticket = Lighthouse::Ticket.find(params[:ticket_id], :params => { :project_id => 8994 })
     ticket.priority = params[:priority].to_i
     ticket.save
